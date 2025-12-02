@@ -1,0 +1,232 @@
+
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, bm}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta, positioning}
+\usepackage{caption}
+
+\definecolor{unired}{HTML}{9B0014}
+\usecolortheme[named=unired]{structure}
+\usetheme{Madrid}
+
+% ---------- Titolo ----------
+\title[Mindfulness e marcatori dello stress]{Mindfulness e marcatori dello stress:\\uno studio di meta-analisi}
+\author{Federica Belardinelli}
+\date[16 settembre 2025]{}
+\institute{Università degli Studi di Padova\\Dipartimento di Scienze Statistiche}
+
+\begin{document}
+
+% ---------- Copertina ----------
+\begin{frame}[label=cover]
+    \centering
+    \begin{beamercolorbox}[rounded=true, shadow=true, center, wd=\textwidth]{title}
+        \usebeamerfont{title}
+        {\color{white}\inserttitle}\\[0.2cm]
+        \usebeamerfont{subtitle}{\normalsize Discussione relazione finale}
+    \end{beamercolorbox}
+
+    \vspace{0.75em}
+    % Sostituisci con il tuo logo (opzionale)
+    \includegraphics[width=0.18\textwidth]{logo_universita.jpg}
+
+    \vspace{0.9em}
+
+    {\large\textbf{\insertauthor}}\\[0.5em]
+    {Corso di Laurea Triennale in Statistica per le Tecnologie e le Scienze}\\[0.25em]
+    {\small Relatore: Prof.\ Annamaria Guolo}\\[0.1em]
+    {\small A.A. 2024/2025}
+\end{frame}
+
+% ---------- Introduzione ----------
+\section{Introduzione}
+\begin{frame}{Contesto e motivazioni}
+  \begin{block}{Mindfulness}
+    Pratica di attenzione consapevole e non giudicante al momento presente; evidenze di beneficio su regolazione emotiva e stress.
+  \end{block}
+  \begin{block}{Stress fisiologico}
+    Attivazione asse HPA e sistema simpatico $\Rightarrow$ variazioni in cortisolo e pressione arteriosa.
+  \end{block}
+  \begin{exampleblock}{Riferimento chiave}
+    Pascoe et al.\ (2017): 45 RCT con controlli attivi su marcatori fisiologici dello stress.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Obiettivi della tesi}
+  \begin{itemize}
+    \item Stimare l'\textbf{effetto medio} della mindfulness su: \textbf{cortisolo (SMD)}, \textbf{pressione sistolica (SBP)}, \textbf{pressione diastolica (DBP)}.
+    \item Valutare l'\textbf{eterogeneità} tra studi e la \textbf{robustezza} delle inferenze con metodi avanzati.
+    \item Esplorare il ruolo della \textbf{tipologia di pratica} (FA, OM, AST) in meta-regressione.
+    \item Integrare, per SBP e DBP, una \textbf{meta-analisi multivariata}.
+  \end{itemize}
+\end{frame}
+
+% ---------- Panoramica meta-analisi ----------
+\section{Che cos'è la meta-analisi}
+\begin{frame}{Definizione e logica}
+  \begin{block}{Meta-analisi}
+    ``Analisi delle analisi'' (Glass): combina risultati indipendenti per aumentare potenza, precisione e generalizzabilità.
+  \end{block}
+  \begin{block}{Pesi}
+    Media pesata con pesi $\;w_i = 1/\sigma_i^2$ (\emph{precisione}) $\Rightarrow$ studi più precisi contribuiscono di più.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Modelli principali}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Effetti fissi (FE)}\\[0.2em]
+      \begin{align*}
+        Y_i &= \beta + \varepsilon_i,\;\; \varepsilon_i \sim \mathcal{N}(0,\sigma_i^2)\\
+        \hat{\beta}_{FE} &= \frac{\sum w_i Y_i}{\sum w_i}
+      \end{align*}
+      Ipotesi: unica vera misura d'effetto.
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Effetti casuali (RE)}\\[0.2em]
+      \begin{align*}
+        Y_i &= \beta_i + \varepsilon_i,\;\; \beta_i = \beta + \eta_i\\
+        \eta_i &\sim \mathcal{N}(0,\tau^2),\;\; Y_i \sim \mathcal{N}(\beta,\sigma_i^2+\tau^2)
+      \end{align*}
+      Ipotesi: vera misura d'effetto \emph{varia} tra studi ($\tau^2$).
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---------- Metodi avanzati ----------
+\section{Strumenti statistici}
+\begin{frame}{Eterogeneità e diagnostica}
+  \begin{itemize}
+    \item Test $Q$ di Cochran; indici $I^2$ (quota di variabilità dovuta a eterogeneità) e $H^2$.
+    \item \textbf{Analisi di influenza}: residui studentizzati, distanza di Cook, Baujat plot.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Perché servono correzioni con pochi studi?}
+  \begin{itemize}
+    \item Inferenze asintotiche possono essere \emph{ottimistiche}: IC troppo stretti, $p$-value piccoli.
+    \item Obiettivo: migliorare la \textbf{copertura} degli IC e la \textbf{calibrazione} dei test.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Hartung--Knapp (HK)}
+  \begin{block}{Idea}
+    Aggiusta la varianza dello stimatore sotto RE e usa la distribuzione $t$ con $n-1$ g.d.l.
+  \end{block}
+  \begin{itemize}
+    \item Intervalli più \textbf{realistici} quando $n$ è piccolo.
+    \item Riduce il rischio di \emph{falsa precisione}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{ML e REML}
+  \begin{block}{Massima verosimiglianza (ML)}
+    Stima congiunta di $\beta$ e $\tau^2$ massimizzando la log-verosimiglianza; inferenza via Wald o profilo.
+  \end{block}
+  \begin{alertblock}{Verosimiglianza ristretta (REML)}
+    Corregge il \textbf{bias negativo} nella stima di $\tau^2$ dovuto alla stima di $\beta$; spesso preferibile con pochi studi.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Skovgaard e Bartlett}
+  \begin{block}{Skovgaard}
+    Correzione di \textbf{ordine superiore} della radice del log-rapporto di verosimiglianza $\Rightarrow$ IC e test più affidabili con $n$ ridotto.
+  \end{block}
+  \begin{block}{Correzione di Bartlett}
+    Riscalatura del log-rapporto di verosimiglianza per \textbf{calibrare} test e coperture degli IC al livello nominale.
+  \end{block}
+\end{frame}
+
+% ---------- Dati e costruzione degli effetti ----------
+\section{Setting e risultati}
+\begin{frame}{Studi e variabili}
+  \begin{itemize}
+    \item \textbf{45} RCT con controlli attivi; pratiche FA, OM, AST.
+    \item In questa tesi: \textbf{Cortisolo (SMD)}, \textbf{SBP (MD, mmHg)}, \textbf{DBP (MD, mmHg)}.
+  \end{itemize}
+  \begin{exampleblock}{Costruzione degli effetti}
+    Effetto $=\ (\Delta \overline{Y})_{\text{intervento}} - (\Delta \overline{Y})_{\text{controllo}}$, con $\Delta \overline{Y}=\overline{Y}_{post}-\overline{Y}_{pre}$;\; per il cortisolo: SMD (correzione di Hedges).
+  \end{exampleblock}
+\end{frame}
+
+% ---------- Risultati: Cortisolo ----------
+\begin{frame}{Cortisolo (meta-analisi RE univariata)}
+  \begin{itemize}
+    \item \textbf{6 studi}. Effetto medio \textbf{negativo} con DL/ML/REML (stima $\approx -0{,}41$ SMD).
+    \item \textbf{Skovgaard}: significatività \textit{marginale} ($p \approx 0{,}068$) $\Rightarrow$ cautela.
+    \item Eterogeneità: $I^2$ molto basso; tuttavia IC ampi per $\tau^2$.
+  \end{itemize}
+  \begin{alertblock}{Lettura}
+    Tendenza favorevole all'intervento, ma evidenza limitata dalla \textbf{bassa numerosità} e incertezza su $\tau^2$.
+  \end{alertblock}
+\end{frame}
+
+% ---------- Risultati: Sistolica ----------
+\begin{frame}{Pressione arteriosa sistolica (RE univariata)}
+  \begin{itemize}
+    \item \textbf{11 studi}. Effetto medio \textbf{negativo e significativo}; robusto ai metodi (DL/ML/REML).
+    \item \textbf{Skovgaard}: $p \approx 0{,}011$ (conferma significatività).
+    \item Eterogeneità: $I^2$ da basso a moderato (es.\ DL $\approx 35\%$, REML $\approx 20\%$); due studi influenti, ma conclusioni stabili.
+  \end{itemize}
+  \begin{exampleblock}{Implicazione}
+    Riduzione \textbf{clinicamente rilevante} della SBP nei gruppi mindfulness.
+  \end{exampleblock}
+\end{frame}
+
+% ---------- Risultati: Diastolica ----------
+\begin{frame}{Pressione arteriosa diastolica (RE univariata)}
+  \begin{itemize}
+    \item Effetto medio \textbf{negativo e significativo}, coerente con la sistolica.
+    \item Diagnostica senza anomalie decisive; robustezza alle specifiche.
+  \end{itemize}
+\end{frame}
+
+% ---------- Meta-regressione ----------
+\begin{frame}{Meta-regressione (moderatore: tipologia pratica)}
+  \begin{itemize}
+    \item Moderatore: FA / OM / AST (per cortisolo: FA vs AST).
+    \item \textbf{Nessuna} differenza statisticamente significativa tra tipologie nei tre indicatori.
+    \item Indicazioni esplorative: possibili effetti più marcati per \textbf{FA}; da verificare con più studi.
+  \end{itemize}
+\end{frame}
+
+% ---------- Multivariata ----------
+\begin{frame}{Analisi multivariata (SBP + DBP)}
+  \begin{itemize}
+    \item Modello RE multivariato con ML/REML; scelta tramite AIC favorevole a \textbf{REML}.
+    \item Stime medie \textbf{coerenti} con univariato, leggermente più basse ma \textbf{significative}.
+    \item Nota: in contesti con pochi studi, stime di correlazione talora \textbf{estreme} ($\pm1$).
+  \end{itemize}
+\end{frame}
+
+% ---------- Limiti e conclusioni ----------
+\section{Conclusioni}
+\begin{frame}{Limiti e sviluppi futuri}
+  \begin{itemize}
+    \item \textbf{Numerosità} ridotta per il cortisolo; eterogeneità non trascurabile in alcuni esiti.
+    \item In multivariato, possibili \textbf{instabilità} nelle stime di correlazione.
+    \item Opportuno valutare formalmente il \textbf{publication bias}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusioni}
+  \begin{block}{Risultato principale}
+    Mindfulness associata a \textbf{variazioni favorevoli} nei marcatori fisiologici: evidenza \textbf{solida} per SBP/DBP, \textbf{promettente} ma fragile per cortisolo.
+  \end{block}
+  \begin{block}{Valore metodologico}
+    Metodi avanzati (HK, ML/REML, Skovgaard, Bartlett) migliorano l'\textbf{affidabilità} quando gli studi sono pochi.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \centering\Large Grazie per l'attenzione
+\end{frame}
+
+\end{document}

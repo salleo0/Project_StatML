@@ -1,0 +1,186 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, bm}
+\usepackage{booktabs}
+
+\definecolor{unired}{HTML}{9B0014}
+\usecolortheme[named=unired]{structure}
+\usetheme{Madrid}
+
+% Blocchi normali
+\setbeamercolor{block title}{fg=white,bg=unired}
+\setbeamercolor{block body}{fg=black,bg=unired!10}
+
+% Blocchi di avviso
+\setbeamercolor{block title alerted}{fg=white,bg=red!70!black}
+\setbeamercolor{block body alerted}{fg=black,bg=red!10}
+
+% Blocchi di esempio
+\setbeamercolor{block title example}{fg=white,bg=unired!70}
+\setbeamercolor{block body example}{fg=black,bg=unired!10}
+
+
+\title[Mindfulness e stress]{Mindfulness e marcatori fisiologici dello stress}
+\author{Federica Belardinelli}
+\institute{Università degli Studi di Padova}
+\date{16 settembre 2025}
+
+\begin{document}
+
+% --- Copertina ---
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% --- Contesto ---
+\section{Contesto}
+\begin{frame}{Stress e salute}
+  \begin{itemize}
+    \item Lo stress è un \textbf{fattore di rischio} psicologico e fisiologico.
+    \item Psicologico: ansia e depressione; Fisiologico: \textbf{SNS} e \textbf{asse HPA} attivati.
+    \item Marcatori: \textbf{cortisolo}, frequenza cardiaca, pressione arteriosa.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Mindfulness}
+  \begin{block}{Definizione}
+    Insieme di pratiche per sviluppare \textbf{attenzione consapevole e non giudicante} al momento presente.
+  \end{block}
+  \begin{itemize}
+    \item \textbf{FA}: attenzione focalizzata (es.\ respiro).
+    \item \textbf{OM}: monitoraggio aperto di pensieri/sensazioni senza giudizio.
+    \item \textbf{AST}: trascendimento spontaneo dell'attività mentale.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Studio di riferimento e focus della tesi}
+  \begin{itemize}
+    \item Pascoe et al.\ (2017): meta-analisi di \textbf{45 RCT} su marcatori dello stress.
+    \item Nella tesi: focus su \textbf{3 indicatori}:
+      \begin{enumerate}
+        \item Cortisolo
+        \item Pressione sistolica (SBP)
+        \item Pressione diastolica (DBP)
+      \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+% --- Meta-analisi ---
+\section{Meta-analisi}
+\begin{frame}{Cos’è la meta-analisi}
+  \begin{block}{Definizione}
+    Introdotta da Glass: \textbf{``analisi delle analisi''}. Combina studi indipendenti $\Rightarrow$ stime più \textbf{precise e affidabili}.
+  \end{block}
+  \begin{itemize}
+    \item Media pesata per la precisione ($w_i = \sigma_i^{-2}$).
+    \item Aumento della potenza statistica.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelli: Effetti fissi (FE) e casuali (RE)}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Effetti fissi (FE)}
+      \begin{align*}
+        Y_i &= \beta + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0,\sigma_i^2) \\
+        \hat{\beta}_{\text{FE}} &= \frac{\sum_i w_i Y_i}{\sum_i w_i}, \quad w_i = \sigma_i^{-2}
+      \end{align*}
+      \vspace{-0.5em}
+      Ipotesi: unica vera misura d'effetto.
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Effetti casuali (RE)}
+      \begin{align*}
+        Y_i &= \beta_i + \varepsilon_i, \quad \beta_i = \beta + \eta_i, \quad \eta_i \sim \mathcal{N}(0,\tau^2) \\
+        Y_i &\sim \mathcal{N}(\beta,\, \sigma_i^2 + \tau^2)
+      \end{align*}
+      \vspace{-0.5em}
+      Ipotesi: l'effetto varia tra studi ($\tau^2$).
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Eterogeneità ---
+\section{Eterogeneità}
+\begin{frame}{Misurare l'eterogeneità}
+  \begin{block}{Test Q di Cochran}
+    \[
+      Q = \sum_i w_i \,(Y_i - \hat{\beta}_{\text{FE}})^2
+    \]
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Indice $I^2$}
+        \[
+          I^2 = \max\!\left(0,\, \frac{Q-(k-1)}{Q}\right)\times 100\%
+        \]
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Indice $H^2$}
+        \[
+          H^2 = \frac{Q}{k-1}, \qquad H = \sqrt{H^2}
+        \]
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Metodi di stima ---
+\section{Metodi}
+\begin{frame}{Stimare $\beta$ e $\tau^2$}
+  \begin{itemize}
+    \item \textbf{DerSimonian \& Laird} (classico).
+    \item \textbf{Hartung--Knapp}: varianza aggiustata, uso di $t$ $\Rightarrow$ IC più realistici con pochi studi.
+    \item \textbf{ML} (Massima verosimiglianza):
+      \begin{equation*}
+        \ell(\beta,\tau^2) = -\tfrac{1}{2}\sum_i \Big[ \log(\sigma_i^2+\tau^2) + \frac{(Y_i-\beta)^2}{\sigma_i^2+\tau^2} \Big]
+      \end{equation*}
+    \item \textbf{REML} (Verosimiglianza ristretta): massimizza la verosimiglianza dei residui, correggendo il bias di $\tau^2$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{REML: forma della log-verosimiglianza ristretta}
+  \begin{block}{Impostazione}
+    Con $V=\mathrm{diag}(\sigma_i^2)+\tau^2 I$, $X$ matrice del modello e $\hat{\beta}=(X^\top V^{-1}X)^{-1}X^\top V^{-1}Y$:
+  \end{block}
+  \begin{equation*}
+    \ell_R(\tau^2) = -\tfrac{1}{2}\Big[\log|V| + \log|X^\top V^{-1}X| + (Y-X\hat{\beta})^\top V^{-1}(Y-X\hat{\beta})\Big] + C
+  \end{equation*}
+  \begin{itemize}
+    \item Migliora la stima di $\tau^2$ soprattutto con \textbf{pochi studi}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Correzioni per piccoli campioni}
+  \begin{itemize}
+    \item \textbf{Skovgaard}: correzione di ordine superiore della radice del log-rapporto di verosimiglianza $\Rightarrow$ test/IC più calibrati.
+    \item \textbf{Bartlett}: riscalatura del log-rapporto di verosimiglianza per migliorare la copertura degli IC.
+  \end{itemize}
+\end{frame}
+
+% --- Meta-regressione ---
+\section{Meta-regressione}
+\begin{frame}{Modello di meta-regressione}
+  \begin{block}{Specificazione (RE con moderatori)}
+    \[
+      Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_p X_{ip} + u_i + \varepsilon_i,\quad
+      u_i \sim \mathcal{N}(0,\tau^2),\ \varepsilon_i \sim \mathcal{N}(0,\sigma_i^2)
+    \]
+  \end{block}
+  \begin{itemize}
+    \item Scopo: spiegare l’\textbf{eterogeneità} tramite \textbf{moderatori}.
+    \item Nella tesi: moderatore = \textbf{tipologia di pratica} (FA, OM, AST).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \centering \Large Prima parte — Fine
+\end{frame}
+
+\end{document}

@@ -1,0 +1,189 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title[Mindfulness e marcatori dello stress]{Mindfulness e marcatori dello stress: uno studio di meta-analisi}
+\author[F. Belardinelli]{Laureando: \textbf{Federica Belardinelli}\\Relatore: Prof.\ Annamaria Guolo}
+\institute[UniPD]{Università degli Studi di Padova\\Dipartimento di Scienze Statistiche}
+\date{Anno Accademico 2024/2025}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Schema della presentazione}
+  \tableofcontents
+\end{frame}
+
+\section{Contesto e obiettivi}
+\begin{frame}{Contesto}
+  \begin{itemize}
+    \item La \textit{mindfulness} è una pratica di attenzione consapevole al presente; evidenze di beneficio su stress, ansia, depressione.
+    \item Lo stress attiva asse HPA e sistema simpatico $\Rightarrow$ variazioni in marcatori fisiologici (cortisolo, pressione arteriosa).
+    \item Studio di riferimento: meta-analisi RCT su interventi meditativi vs controlli attivi (Pascoe et al., 2017).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Obiettivi della tesi}
+  \begin{itemize}
+    \item Valutare l'associazione tra mindfulness e tre marcatori dello stress: \textbf{cortisolo}, \textbf{pressione sistolica (SBP)}, \textbf{pressione diastolica (DBP)}.
+    \item Confronto intervento vs controllo: effetto medio e \textbf{eterogeneità} tra studi.
+    \item Esplorare il ruolo della \textbf{tipologia di pratica} (FA, OM, AST) in meta-regressione.
+    \item Integrare, per SBP e DBP, una \textbf{meta-analisi multivariata}.
+  \end{itemize}
+\end{frame}
+
+\section{Che cos'è la meta-analisi}
+\begin{frame}{Definizione e motivazioni}
+  \begin{itemize}
+    \item Meta-analisi = ``analisi delle analisi'' (Glass): integra risultati di studi indipendenti.
+    \item Aumenta potenza statistica, precisione e generalizzabilità.
+    \item Pesi proporzionali alla precisione (varianze entro-studio).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelli principali}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \textbf{Effetti fissi (FE)}
+      \begin{align*}
+        Y_i &= \beta + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0,\sigma_i^2)\\
+        \hat{\beta}_{FE} &= \frac{\sum w_i Y_i}{\sum w_i},\quad w_i=\sigma_i^{-2}
+      \end{align*}
+      \vspace{1ex}
+      Ipotesi: tutti gli studi stimano la stessa vera misura d'effetto.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Effetti casuali (RE)}
+      \begin{align*}
+        Y_i &= \beta_i + \varepsilon_i\\
+        \beta_i &= \beta + \eta_i,\quad \eta_i \sim \mathcal{N}(0,\tau^2)\\
+        Y_i &\sim \mathcal{N}(\beta, \sigma_i^2+\tau^2)
+      \end{align*}
+      \vspace{1ex}
+      Ipotesi: vera misura d'effetto \emph{varia} tra studi ($\tau^2$).
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Metodi avanzati (campioni piccoli)}
+\begin{frame}{Perché servono correzioni?}
+  \begin{itemize}
+    \item Con pochi studi, le inferenze asintotiche possono essere ottimistiche (IC troppo stretti, $p$-value troppo piccoli).
+    \item Obiettivo: \textbf{migliorare la copertura} degli intervalli e \textbf{calibrare} i test.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Hartung--Knapp (HK)}
+  \begin{itemize}
+    \item Aggiusta la varianza dello stimatore dell'effetto medio sotto RE.
+    \item Usa la distribuzione $t$ di Student con $n-1$ g.d.l. (al posto della normale).
+    \item Produce IC più \emph{realistici} quando $n$ è piccolo.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Massima verosimiglianza (ML) e verosimiglianza ristretta (REML)}
+  \begin{itemize}
+    \item Stima congiunta di $\beta$ e $\tau^2$ massimizzando la (log-)verosimiglianza.
+    \item \textbf{REML} corregge il bias negativo della stima di $\tau^2$ tenendo conto dei g.d.l. persi.
+    \item Consentono inferenza tramite \emph{Wald}, profilo di verosimiglianza e criteri informativi (AIC).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Skovgaard e Bartlett}
+  \begin{itemize}
+    \item \textbf{Skovgaard}: correzione di ordine superiore della radice del log-rapporto di verosimiglianza $\Rightarrow$ test e IC più affidabili con $n$ piccolo.
+    \item \textbf{Correzione di Bartlett}: riscalatura del log-rapporto di verosimiglianza per migliorare la calibrazione di test e IC.
+  \end{itemize}
+\end{frame}
+
+\section{Dati e variabili}
+\begin{frame}{Studi e marcatori considerati}
+  \begin{itemize}
+    \item 45 studi randomizzati controllati su pratiche FA/OM/AST vs controlli attivi.
+    \item In questa tesi: \textbf{Cortisolo (SMD)}, \textbf{SBP (MD in mmHg)}, \textbf{DBP (MD in mmHg)}.
+    \item Effetto costruito come variazione post-pre nell'intervento meno variazione nel controllo.
+  \end{itemize}
+\end{frame}
+
+\section{Strategia di analisi}
+\begin{frame}{Passi dell'analisi}
+  \begin{enumerate}
+    \item Meta-analisi RE univariata per ciascun indicatore (DL, ML, REML).
+    \item \textbf{Meta-regressione} (tipologia di pratica come moderatore), con verifica tramite test sui moderatori.
+    \item Diagnostica: eterogeneità ($Q$, $I^2$, $H^2$), analisi di influenza.
+    \item \textbf{Meta-analisi multivariata} (SBP e DBP) con ML/REML.
+  \end{enumerate}
+\end{frame}
+
+\section{Risultati}
+\begin{frame}{Cortisolo (univariato)}
+  \begin{itemize}
+    \item Effetto medio (RE) \textbf{negativo} e di entità simile con DL/ML/REML (tendenza favorevole all'intervento).
+    \item Correzione di \textbf{Skovgaard}: significatività \emph{marginale} $\Rightarrow$ cautela interpretativa.
+    \item Eterogeneità bassa secondo $I^2/H^2$; intervalli per $\tau^2$ ampi $\Rightarrow$ incertezza residua.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Pressione sistolica (univariato)}
+  \begin{itemize}
+    \item Effetto medio (RE) \textbf{negativo e significativo}; robusto ai metodi (DL/ML/REML).
+    \item $I^2$ da basso a moderato a seconda del metodo; diagnostica: due studi influenti ma le conclusioni restano stabili.
+    \item Test di Skovgaard: conferma la significatività dell'effetto.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Pressione diastolica (univariato)}
+  \begin{itemize}
+    \item Effetto medio (RE) \textbf{negativo} e statisticamente significativo.
+    \item Coerenza con i risultati per la sistolica.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisi multivariata (SBP + DBP)}
+  \begin{itemize}
+    \item Modello RE multivariato con ML/REML; scelta tramite AIC favorevole a REML.
+    \item Risultati \textbf{coerenti} con le analisi univariate; stime leggermente più basse ma significative.
+  \end{itemize}
+\end{frame}
+
+\section{Meta-regressione}
+\begin{frame}{Effetto della tipologia di pratica}
+  \begin{itemize}
+    \item Moderatore: FA/OM/AST.
+    \item \textbf{Nessuna evidenza} di differenze significative tra tipologie nei tre indicatori.
+    \item Indicazioni esplorative: possibili effetti più marcati per FA (da verificare con più studi).
+  \end{itemize}
+\end{frame}
+
+\section{Limiti e sviluppi}
+\begin{frame}{Limiti}
+  \begin{itemize}
+    \item Numero di studi \textbf{ridotto} per il cortisolo; per SBP/DBP eterogeneità non trascurabile.
+    \item In multivariato, stime di correlazione talora instabili (valori estremi).
+    \item Mancanza di analisi formali di \textbf{publication bias} (sviluppo futuro).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusioni}
+  \begin{itemize}
+    \item Mindfulness associata a \textbf{variazioni favorevoli} dei marcatori fisiologici: effetto più solido per SBP/DBP; evidenza promettente ma fragile per cortisolo.
+    \item Metodologie avanzate (HK, ML/REML, Skovgaard, Bartlett) migliorano l'affidabilità inferenziale con pochi studi.
+    \item Necessari studi ulteriori e disegni più omogenei; utile estendere e consolidare l'approccio multivariato.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \centering \Large Grazie per l'attenzione
+\end{frame}
+
+\end{document}
