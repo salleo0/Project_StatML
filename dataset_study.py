@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def import_dataset(file_path, data_frame):
+def import_dataset(file_path):
     
     column_names = [
         'ID', 'Age', 'Gender', 'Education', 'Country', 'Ethnicity',
@@ -31,3 +31,4 @@ def import_dataset(file_path, data_frame):
     for drug in drug_names:
         data_frame[drug] = data_frame[drug].apply(lambda x: 1 if x in ['CL3','CL4','CL5','CL6'] else 0)
 
+    return data_frame
