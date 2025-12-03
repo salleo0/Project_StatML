@@ -17,14 +17,12 @@ def naive_tree(X, y, target_column, feature_columns):
         shuffle = True
     )
 
-    # Create the decision tree
+    # Train the model
     decision_tree = DecisionTreeClassifier(
         max_depth=3,
         random_state=42,
         class_weight='balanced'
         )
-
-    # Fit the training data
     decision_tree.fit(X_train, y_train)
 
     # Get predicted values
@@ -34,7 +32,7 @@ def naive_tree(X, y, target_column, feature_columns):
     conf_mat = confusion_matrix(y_test, y_pred)
     tn, fp, fn, tp = conf_mat.ravel()
 
-    # Calculate metrics
+    # Compute metrics
     sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
     accuracy = accuracy_score(y_test, y_pred)
@@ -45,7 +43,7 @@ def naive_tree(X, y, target_column, feature_columns):
     print(f"Specificity (Recall for Non-Users): {specificity:.4f}")
     print(f"Accuracy: {accuracy:.4f}")
 
-    # 5. Feature Importance (Gini Importance)
+    # Feature Importance (Gini Importance)
     importances = decision_tree.feature_importances_
     indices = np.argsort(importances)[::-1]
 
@@ -55,7 +53,7 @@ def naive_tree(X, y, target_column, feature_columns):
         if importances[indices[f]] > 0:
             print(f"{feature_columns[indices[f]]}: {importances[indices[f]]:.4f}")
 
-    # 6. Plot Tree
+    # Plot Tree
     plt.figure(figsize=(20, 10))
     plot_tree(decision_tree, feature_names=feature_columns, class_names=['Non-User', 'User'], filled=True, fontsize=10)
     plt.title("Decision Tree")
@@ -66,11 +64,10 @@ def naive_tree(X, y, target_column, feature_columns):
 
 def cv_tree(X,y, target_column, feature_columns):
 
-        
-    ########### Approach 2: using K-fold cross validation
-    print("Strategy 2")
+    # Approach 2: using K-fold cross validation
+    print("Trees with Cross Validation")
 
-    # 1. Setup Stratified K-Fold (5 splits is standard)
+    # Setup Stratified K-Fold (5 splits is standard)
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
     # Lists to store results from each fold
@@ -84,13 +81,14 @@ def cv_tree(X,y, target_column, feature_columns):
 
     fold_num = 1
 
-    # 2. The Training Loop
+    # Perform multiple splits and create the trees
     for train_index, test_index in skf.split(X, y):
+
         # Split Data
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
         
-        # Train Model
+        # Train the model
         decision_tree = DecisionTreeClassifier(
             max_depth=3,           # Keep tree simple
             class_weight='balanced',
@@ -98,33 +96,34 @@ def cv_tree(X,y, target_column, feature_columns):
         )
         decision_tree.fit(X_train, y_train)
         
-        # Predict
+        # Get predicted values
         y_pred = decision_tree.predict(X_test)
         
-        # Calculate Metrics
+        # Compute confusion matrix
         cm = confusion_matrix(y_test, y_pred)
         tn, fp, fn, tp = cm.ravel()
         
-        acc = accuracy_score(y_test, y_pred)
-        sens = tp / (tp + fn) if (tp + fn) > 0 else 0
-        spec = tn / (tn + fp) if (tn + fp) > 0 else 0
-        
+        # Compute metrics
+        sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0
+        specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
+        accuracy = accuracy_score(y_test, y_pred)
+
         # Save results
-        accuracies.append(acc)
-        sensitivities.append(sens)
-        specificities.append(spec)
-        
-        print(f"{fold_num:<5} | {acc:.4f}     | {sens:.4f}       | {spec:.4f}")
+        sensitivities.append(sensitivity)
+        specificities.append(specificity)
+        accuracies.append(accuracy)
+
+        print(f"{fold_num:<5} | {accuracy:.4f}     | {sensitivity:.4f}       | {specificity:.4f}")
         fold_num += 1
 
-    # 3. Final Average Results
+    # Final Average Results
     print("-" * 46)
     print(f"Mean Accuracy:    {np.mean(accuracies):.4f}")
-    print(f"Mean Sensitivity: {np.mean(sensitivities):.4f}  <-- (This is your robust score)")
+    print(f"Mean Sensitivity: {np.mean(sensitivities):.4f} (robust score)")
     print(f"Mean Specificity: {np.mean(specificities):.4f}")
 
-    # 4. Plot the tree from the last fold (Visual Aid)
+    # Plot the tree from the last fold (Visual Aid)
     plt.figure(figsize=(20, 10))
     plot_tree(decision_tree, feature_names=feature_columns, class_names=['Non-User', 'User'], filled=True, fontsize=10)
     plt.title(f"Decision Tree for {target_column} (Fold {fold_num-1})")
-    plt.savefig('Pictures\\decision_tree_fold5.png') # Saves the file so it doesn't block execution
+    plt.savefig('Pictures\\decision_tree_fold5.png')

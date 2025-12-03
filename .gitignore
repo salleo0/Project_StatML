@@ -1,2 +1,9 @@
-_*
+
 Pictures
+
+# Ignore the folder
+__pycache__/
+
+# Ignore the compiled files wherever they appear
+*.py[cod]
+*$py.class
