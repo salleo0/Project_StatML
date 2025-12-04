@@ -7,10 +7,11 @@ file_path = 'drug_consumption.data'
 # Create the dataframe to work with and analyze the dataset
 data_frame = import_dataset(file_path)
 
-# Select features and target drug
-feature_columns = ['Age', 'Gender', 'Education', 'Country', 'Ethnicity', 
+# Select features and target drugs
+# Note that Country and Ethnicity are not considered
+feature_columns = ['Age', 'Gender', 'Education', 
                 'Nscore', 'Escore', 'Oscore', 'Cscore', 'Ascore', 'Impulsive', 'SS']
-target_column = 'Crack'
+target_column = 'Cannabis'
 
 # Extract features and target
 X = data_frame[feature_columns].copy()

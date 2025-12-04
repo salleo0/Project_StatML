@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc
+from sklearn.metrics import confusion_matrix, roc_curve, auc, precision_recall_curve, average_precision_score
 
 
 def naive_tree(X, y, target_column, feature_columns):
@@ -20,7 +20,7 @@ def naive_tree(X, y, target_column, feature_columns):
     decision_tree = DecisionTreeClassifier(
         max_depth=4,
         random_state=42,
-        class_weight='balanced'
+        #class_weight='balanced'
         )
     decision_tree.fit(X_train, y_train)
 
@@ -64,11 +64,31 @@ def naive_tree(X, y, target_column, feature_columns):
     plt.grid(alpha=0.3)
     plt.savefig('Pictures/roc_curve_naive.png')
 
+    # Calculate Precision-Recall curve
+    precision_curve, recall_curve, _ = precision_recall_curve(y_test, y_probs)
+    avg_precision = average_precision_score(y_test, y_probs)
+    baseline = len(y_test[y_test==1]) / len(y_test) # Ratio of positives
 
-    # Feature Importance (Gini Importance)
+    plt.figure(figsize=(8, 6))
+    plt.plot(recall_curve, precision_curve, color='green', lw=2, label=f'PR curve (AP = {avg_precision:.2f})')
+    plt.plot([0, 1], [baseline, baseline], linestyle='--', color='navy', label=f'Baseline ({baseline:.2f})')
+    
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('Recall (Sensitivity)')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve (Naive)')
+    plt.legend(loc="upper right")
+    plt.grid(alpha=0.3)
+    plt.savefig('Pictures/pr_curve_naive.png')
+    plt.close()
+
+    
+    # Get Gini importances
     importances = decision_tree.feature_importances_
+    # Sort their indices from most to least important
     indices = np.argsort(importances)[::-1]
-
+    # Print them in order
     print("\nFeature Ranking (Gini Importance):")
     for f in range(len(feature_columns)):
         # Only print features that were actually used (importance > 0)
@@ -103,6 +123,10 @@ def cv_tree(X,y, target_column, feature_columns):
     sensitivities = []
     specificities = []
     
+    precisions_interp = []
+    aps = [] # Average Precision Scores
+    mean_recall = np.linspace(0, 1, 100) # Common X-axis for PR interpolation
+
     print(f"\nTarget: {target_column}")
     print(f"{'Fold':<5} | {'Precision':<10} | {'Sensitivity':<12} | {'Specificity':<12}")
     print("-" * 46)
@@ -139,6 +163,15 @@ def cv_tree(X,y, target_column, feature_columns):
         
         # Plot individual fold curve
         plt.plot(fpr, tpr, lw=1, alpha=0.3, label=f'ROC Fold {fold_num} (AUC = {roc_auc:.2f})')
+
+        # Calculate precision-recall curve
+        p_fold, r_fold, _ = precision_recall_curve(y_test, y_probs)
+        ap_fold = average_precision_score(y_test, y_probs)
+        aps.append(ap_fold)
+        
+        # Interpolate Precision (Note: r_fold is usually descending, so we reverse for interp)
+        interp_p = np.interp(mean_recall, r_fold[::-1], p_fold[::-1])
+        precisions_interp.append(interp_p)
 
         # Get predicted values
         y_pred = decision_tree.predict(X_test)
@@ -184,6 +217,32 @@ def cv_tree(X,y, target_column, feature_columns):
     plt.legend(loc="lower right")
     plt.grid(alpha=0.3)
     plt.savefig('Pictures/roc_curve_cv.png')
+    plt.close()
+
+    plt.figure(figsize=(10, 8))
+    
+    mean_precision = np.mean(precisions_interp, axis=0)
+    mean_ap = np.mean(aps)
+    std_ap = np.std(aps)
+    
+    # Calculate baseline (fraction of positives in dataset)
+    baseline = len(y[y==1]) / len(y)
+
+    plt.plot(mean_recall, mean_precision, color='green', label=f'Mean PR (AP = {mean_ap:.2f} $\pm$ {std_ap:.2f})', lw=2, alpha=.8)
+    plt.plot([0, 1], [baseline, baseline], linestyle='--', lw=2, color='navy', label=f'Baseline ({baseline:.2f})', alpha=.8)
+    
+    # Add standard deviation area
+    std_precision = np.std(precisions_interp, axis=0)
+    p_upper = np.minimum(mean_precision + std_precision, 1)
+    p_lower = np.maximum(mean_precision - std_precision, 0)
+    plt.fill_between(mean_recall, p_lower, p_upper, color='lightgreen', alpha=.3, label=r'$\pm$ 1 std. dev.')
+
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title(f'Cross-Validated Precision-Recall Curve for {target_column}')
+    plt.legend(loc="upper right")
+    plt.grid(alpha=0.3)
+    plt.savefig('Pictures/pr_curve_cv.png')
     plt.close()
 
     # Final Average Results
