@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.tree import DecisionTreeClassifier, plot_tree
@@ -35,13 +34,13 @@ def naive_tree(X, y, target_column, feature_columns):
     # Compute metrics
     sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
-    accuracy = accuracy_score(y_test, y_pred)
+    precision = tp / (fp + tp) if (fp + tp) > 0 else 0
 
     print(f"\nTarget: {target_column}")
     print("Confusion Matrix: \n", conf_mat)
     print(f"Sensitivity (Recall for Users): {sensitivity:.4f}")
     print(f"Specificity (Recall for Non-Users): {specificity:.4f}")
-    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {precision:.4f}")
 
     # ROC curve
     # Get probabilities for the positive class (index 1)
@@ -86,7 +85,6 @@ def naive_tree(X, y, target_column, feature_columns):
 
 
 def cv_tree(X,y, target_column, feature_columns):
-
     # Approach 2: using K-fold cross validation
     print("Trees with Cross Validation")
 
@@ -101,12 +99,12 @@ def cv_tree(X,y, target_column, feature_columns):
     plt.figure(figsize=(10, 8))
     
     # Lists to store results from each fold
-    accuracies = []
+    precisions = []
     sensitivities = []
     specificities = []
     
     print(f"\nTarget: {target_column}")
-    print(f"{'Fold':<5} | {'Accuracy':<10} | {'Sensitivity':<12} | {'Specificity':<12}")
+    print(f"{'Fold':<5} | {'Precision':<10} | {'Sensitivity':<12} | {'Specificity':<12}")
     print("-" * 46)
 
     fold_num = 1
@@ -152,14 +150,14 @@ def cv_tree(X,y, target_column, feature_columns):
         # Compute metrics
         sensitivity = tp / (tp + fn) if (tp + fn) > 0 else 0
         specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
-        accuracy = accuracy_score(y_test, y_pred)
+        precision = tp / (fp + tp) if (fp + tp) > 0 else 0
 
         # Save results
         sensitivities.append(sensitivity)
         specificities.append(specificity)
-        accuracies.append(accuracy)
+        precisions.append(precision)
 
-        print(f"{fold_num:<5} | {accuracy:.4f}     | {sensitivity:.4f}       | {specificity:.4f}")
+        print(f"{fold_num:<5} | {precision:.4f}     | {sensitivity:.4f}       | {specificity:.4f}")
         fold_num += 1
 
 
@@ -174,6 +172,12 @@ def cv_tree(X,y, target_column, feature_columns):
     # Plot Random Guess Line
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Random Guess', alpha=.8)
 
+    std_tpr = np.std(tprs, axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                 label=r'$\pm$ 1 std. dev.')
+
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title(f'Cross-Validated ROC for {target_column}')
@@ -184,7 +188,7 @@ def cv_tree(X,y, target_column, feature_columns):
 
     # Final Average Results
     print("-" * 46)
-    print(f"Mean Accuracy:    {np.mean(accuracies):.4f}")
+    print(f"Mean Precision:    {np.mean(precisions):.4f}")
     print(f"Mean Sensitivity: {np.mean(sensitivities):.4f} (robust score)")
     print(f"Mean Specificity: {np.mean(specificities):.4f}")
     print(f"Mean AUC: {mean_auc:.4f}")
