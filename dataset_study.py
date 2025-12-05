@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 def import_dataset(file_path):
     
+    # FEATURES
     column_names = [
         'ID', 'Age', 'Gender', 'Education', 'Country', 'Ethnicity',
         'Nscore', 'Escore', 'Oscore', 'Ascore', 'Cscore', 'Impulsive', 'SS',
@@ -13,12 +14,14 @@ def import_dataset(file_path):
         'Nicotine', 'Semeron', 'VSA'
     ]
 
+    # OUTPUT
     drug_names = [
         'Alcohol', 'Amphet', 'Amyl', 'Benzos', 'Caffeine', 'Cannabis', 'Choc', 'Coke', 'Crack',
         'Ecstasy', 'Heroin', 'Ketamine', 'Legalh', 'LSD', 'Meth', 'Mushrooms',
         'Nicotine', 'Semeron', 'VSA'
     ]
 
+    # IMPORTAZIONE DATASET
     data_frame = pd.read_csv(file_path, names=column_names, header=None)
 
     # Semeron is a fictitious drug used to identify over-claimers

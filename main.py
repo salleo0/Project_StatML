@@ -1,5 +1,6 @@
 from dataset_study import import_dataset
 from decision_trees import naive_tree, cv_tree
+from shap_predictions import shap_estimation
 
 # File name
 file_path = 'drug_consumption.data'
@@ -24,3 +25,4 @@ naive_tree(X, y, target_column, feature_columns)
 cv_tree(X, y, target_column, feature_columns)
 
 # SHAP code below
+shap_estimation(X, y)
