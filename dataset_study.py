@@ -35,3 +35,12 @@ def import_dataset(file_path):
         data_frame[drug] = data_frame[drug].apply(lambda x: 1 if x in ['CL3','CL4','CL5','CL6'] else 0)
 
     return data_frame
+
+#Things to explain (mainly about the dataset) and the changes made on it:
+#1. Goal of the main study based on this dataset 
+#2. Input and output varibles
+#3. The role of the output variable 'Semeron' and how it has been treated in the dataset we created
+#4. The simplification of the categories of the output variables (the various drugs): the initial categories were splitted in two groups
+#   and the problem became a classification problem
+#5. The choice of one specific/more specific (discuss about this) output variables. Why it has been made that particular choice?
+#   The exploratory analysis could help to answer this question.
