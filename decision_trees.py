@@ -126,6 +126,7 @@ def cv_tree(X,y, target_column, feature_columns):
     precisions_interp = []
     aps = [] # Average Precision Scores
     mean_recall = np.linspace(0, 1, 100) # Common X-axis for PR interpolation
+    pr_fold_data = []
 
     print(f"\nTarget: {target_column}")
     print(f"{'Fold':<5} | {'Precision':<10} | {'Sensitivity':<12} | {'Specificity':<12}")
@@ -168,6 +169,7 @@ def cv_tree(X,y, target_column, feature_columns):
         p_fold, r_fold, _ = precision_recall_curve(y_test, y_probs)
         ap_fold = average_precision_score(y_test, y_probs)
         aps.append(ap_fold)
+        pr_fold_data.append((p_fold, r_fold, ap_fold))
         
         # Interpolate Precision (Note: r_fold is usually descending, so we reverse for interp)
         interp_p = np.interp(mean_recall, r_fold[::-1], p_fold[::-1])
@@ -221,6 +223,9 @@ def cv_tree(X,y, target_column, feature_columns):
 
     plt.figure(figsize=(10, 8))
     
+    for i, (p_f, r_f, ap_f) in enumerate(pr_fold_data):
+        plt.plot(r_f, p_f, lw=1, alpha=0.3, label=f'PR Fold {i+1} (AP = {ap_f:.2f})')
+
     mean_precision = np.mean(precisions_interp, axis=0)
     mean_ap = np.mean(aps)
     std_ap = np.std(aps)

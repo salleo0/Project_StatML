@@ -11,7 +11,7 @@ data_frame = import_dataset(file_path)
 # Note that Country and Ethnicity are not considered
 feature_columns = ['Age', 'Gender', 'Education', 
                 'Nscore', 'Escore', 'Oscore', 'Cscore', 'Ascore', 'Impulsive', 'SS']
-target_column = 'Cannabis'
+target_column = 'LSD'
 
 # Extract features and target
 X = data_frame[feature_columns].copy()
