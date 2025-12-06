@@ -60,7 +60,7 @@ def feat_barplot(data_frame, x):
 
     # Saving the plot
     filename = f'{x}_relative_barplot.png'
-    folder = 'dataset_pictures'
+    folder = 'Pictures'
     filepath = os.path.join(folder, filename)
     plt.savefig(os.path.join(folder, filename))
     plt.close()
@@ -89,7 +89,7 @@ def proportions_plot(data_frame, y):
     fig.tight_layout()
 
     # Saving the plot
-    plt.savefig('dataset_pictures/relative_users_per_drug.png')
+    plt.savefig('Pictures/relative_users_per_drug.png')
     plt.close(fig)
 
     # Returning the relative frequencies for each drug in case of need

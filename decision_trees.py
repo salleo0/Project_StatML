@@ -99,7 +99,7 @@ def naive_tree(X, y, target_column, feature_columns):
     plt.figure(figsize=(20, 10))
     plot_tree(decision_tree, feature_names=feature_columns, class_names=['Non-User', 'User'], filled=True, fontsize=10)
     plt.title("Decision Tree")
-    plt.savefig('Pictures\\decision_tree_naive.png')
+    plt.savefig('Pictures/decision_tree_naive.png')
 
     print("_" * 46)
 
@@ -261,7 +261,7 @@ def cv_tree(X,y, target_column, feature_columns):
     plt.figure(figsize=(20, 10))
     plot_tree(decision_tree, feature_names=feature_columns, class_names=['Non-User', 'User'], filled=True, fontsize=10)
     plt.title(f"Decision Tree for {target_column} (Fold {fold_num-1})")
-    plt.savefig('Pictures\\decision_tree_fold5.png')
+    plt.savefig('Pictures/decision_tree_fold5.png')
     plt.close()
     
    
