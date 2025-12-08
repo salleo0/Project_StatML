@@ -24,11 +24,33 @@ X = data_frame[feature_columns].copy()
 Y = data_frame[output_columns].copy()
 y = data_frame[target_column].copy()
 
-# Relative barplot of the input feature 'Country'
-feat_barplot(data_frame, 'Country')
+# Redefining the lables of the input feature 'Country'
+country_labels = {
+    -0.09765: 'Australia',
+     0.24923: 'Canada',
+    -0.46841: 'New Zealand',
+    -0.28519: 'Other',
+     0.21128: 'Republic of Ireland',
+     0.96082: 'UK',
+    -0.57009: 'USA'
+}
 
-#Relative barplot of the input feature 'Ethnicity'
-feat_barplot(data_frame, 'Ethnicity')
+# Relative barplot of the input feature 'Country'
+feat_barplot(data_frame, 'Country', country_labels)
+
+# Redefining the lables of the input feature 'Ethnicity'
+ethnicity_labels = {
+    -0.50212: 'Asian',
+    -1.10702: 'Black',
+     1.90725: 'Mixed-Black/Asian',
+     0.12600: 'Mixed-White/Asian',
+    -0.22166: 'Mixed-White/Black',
+     0.11440: 'Other',
+    -0.31685: 'White'
+}
+
+# Relative barplot of the input feature 'Ethnicity'
+feat_barplot(data_frame, 'Ethnicity', ethnicity_labels)
 
 # Relative barplot for all the drugs
 proportions_plot(data_frame, Y)

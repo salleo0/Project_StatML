@@ -47,9 +47,13 @@ def import_dataset(file_path):
 #7. The choice of one specific/more specific (discuss about this) output variables. Why it has been made that particular choice?
 #   The exploratory analysis could help to answer this question.
 
-def feat_barplot(data_frame, x):
+def feat_barplot(data_frame, x, label_map=None):
     # Relative frequencies for the input feature x
     freq = data_frame[x].value_counts(normalize=True)
+
+    # Se ho una mappa codice -> etichetta, la applico agli indici
+    if label_map is not None:
+        freq.index = [label_map.get(v, v) for v in freq.index]
 
     # Barplot with relative frequencies
     plt.figure(figsize=(8, 3))
@@ -60,10 +64,10 @@ def feat_barplot(data_frame, x):
     plt.tight_layout()
 
     # Saving the plot
-    filename = f'{x}_relative_barplot.png'
     folder = 'Pictures'
+    filename = f'{x}_relative_barplot.png'
     filepath = os.path.join(folder, filename)
-    plt.savefig(os.path.join(folder, filename))
+    plt.savefig(filepath)
     plt.close()
 
     # Returning the relative frequencies in case I have to watch at the specific values
