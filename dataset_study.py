@@ -57,7 +57,7 @@ def feat_barplot(data_frame, x, label_map=None):
 
     # Barplot with relative frequencies
     plt.figure(figsize=(8, 3))
-    freq.plot(kind='bar')
+    freq.plot(kind='bar', color='darkred')
     plt.xticks(rotation=90)
     plt.ylabel('Relative frequency')
     plt.title(f'Relative frequencies for {x}')
