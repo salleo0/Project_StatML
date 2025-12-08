@@ -69,7 +69,6 @@ def feat_barplot(data_frame, x):
     # Returning the relative frequencies in case I have to watch at the specific values
     return freq
 
-
 def proportions_plot(data_frame, y):
     # Relative frequencies (0 and 1) for each drug
     users_per_drug_rel = {
@@ -81,7 +80,15 @@ def proportions_plot(data_frame, y):
 
     # Barplot with the relative frequencies for each drug
     fig, ax = plt.subplots(figsize=(15, 8))
-    users_rel_df.plot(kind='bar', width=0.8, ax=ax)
+    
+    # Use of a colormap with a lot of different colors
+    users_rel_df.plot(
+        kind='bar',
+        width=0.8,
+        ax=ax,
+        colormap='tab20'
+    )
+
     ax.set_title('Relative frequency of users per drug type')
     ax.set_xlabel('User (1) and Non-User (0)')
     ax.set_ylabel('Proportion of people')
