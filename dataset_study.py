@@ -38,12 +38,13 @@ def import_dataset(file_path):
 
 # Things to explain (mainly about the dataset) and the changes made on it:
 #1. Goal of the main study based on this dataset 
-#2. Input and output varibles
-#3. The role of the output variable 'Semeron' and how it has been treated in the dataset we created
-#4. The simplification of the categories of the output variables (the various drugs): the initial categories were splitted in two groups
+#2. Goal of our study, explaination of the meaning of variable importance
+#3. Input and output varibles
+#4. The role of the output variable 'Semeron' and how it has been treated in the dataset we created
+#5. The simplification of the categories of the output variables (the various drugs): the initial categories were splitted in two groups
 #   and the problem became a classification problem
-#5. The drop of the input variables 'Ethnicity' and 'Country'
-#6. The choice of one specific/more specific (discuss about this) output variables. Why it has been made that particular choice?
+#6. The drop of the input variables 'Ethnicity' and 'Country'
+#7. The choice of one specific/more specific (discuss about this) output variables. Why it has been made that particular choice?
 #   The exploratory analysis could help to answer this question.
 
 def feat_barplot(data_frame, x):
