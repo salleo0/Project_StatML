@@ -93,7 +93,7 @@ def proportions_plot(data_frame, y):
         colormap='tab20'
     )
 
-    ax.set_title('Relative frequency of users per drug type')
+    ax.set_title('Relative frequency of users and non-users per drug type')
     ax.set_xlabel('User (1) and Non-User (0)')
     ax.set_ylabel('Proportion of people')
     ax.legend(title='Drugs', bbox_to_anchor=(1.05, 1), loc='upper left')
