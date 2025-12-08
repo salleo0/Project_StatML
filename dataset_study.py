@@ -39,7 +39,7 @@ def import_dataset(file_path):
 # Things to explain (mainly about the dataset) and the changes made on it:
 #1. Goal of the main study based on this dataset 
 #2. Goal of our study, explaination of the meaning of variable importance
-#3. Input and output varibles
+#3. Input and output variables
 #4. The role of the output variable 'Semeron' and how it has been treated in the dataset we created
 #5. The simplification of the categories of the output variables (the various drugs): the initial categories were splitted in two groups
 #   and the problem became a classification problem
